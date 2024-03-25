@@ -52,6 +52,7 @@ def create_experiment(exp_id, exp_type, project, description):
         # Update the link to use the relative path
         nb.cells.append(nbformat.v4.new_markdown_cell(f"[Back to Experiment Hub]({relative_path_to_hub})\n# {description}\n**Hypothesis:**"))
         # Add other sections as before
+        nb.cells.append(nbformat.v4.new_code_cell("from IPython.display import Markdown as md \nimport numpy as np \nimport sys \nfrom pathlib import Path \nrelative_path_to_python_scripts = Path('../../../../pythonScripts') \nsys.path.append(str(relative_path_to_python_scripts.resolve())) \nfrom buffer_calc import * \nfrom conc_calc import *"))  # Import section
         nb.cells.append(nbformat.v4.new_markdown_cell("## Materials\n\nMaterials | Cas # | Location | Molecular weight (g/mol)\n---------|----------|---------|---"))  # Materials section
         nb.cells.append(nbformat.v4.new_markdown_cell("## Method\nDescribe the method here."))  # Method section
         nb.cells.append(nbformat.v4.new_markdown_cell("## Analysis\nWrite your analysis plan here."))  # Analysis section
