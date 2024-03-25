@@ -1,2 +1,3 @@
 Experiment ID,Description,Date,Type,Project,Notebook Link
 example,example of experiment template ,24-03-20,experimental technique,project 1,[example](experiments/General/example/example.ipynb)
+24_03_TPHptNO_cd,Abs/CD NO titration for TPH-pterin-NO,24-03-25,AbsCD,TPH_NO,[24_03_TPHptNO_cd](experiments\General\24_03_TPHptNO_cd\24_03_TPHptNO_cd.ipynb)

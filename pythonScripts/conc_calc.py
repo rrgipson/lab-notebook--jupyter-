@@ -42,3 +42,33 @@ def concentration_calculator(conc_str, Mw, final_volume_str, chemical_name):
                 "3. Once fully dissolved, adjust the solution to the final desired volume with deionized water.")
     
     return protocol
+
+def conc_from_uvvis(A, eps, v_add=2, v_tot=500, pathlength=1):
+    '''Calculates concentrations from UV-vis Abs numbers.
+    eps: takes numerical value or parses 'tph' Abs(280nm), 'besc' Abs(280nm), 'nonoate' Abs(250nm).
+    Assumes diluted from stock solution by adding v_add of stock into cuvette to give v_tot uL of solution.'''
+    
+    #params
+    eps_dict = {'tph' : 39310,
+                'besc' : 34400,
+                'nonoate' : 7250}
+
+    if eps in eps_dict.keys():
+        epsilon=eps_dict[eps]
+    else:
+        try:
+            epsilon = float(eps)
+        except:
+            print('Please input eps as compound/protein name or numberical value in [1/cm*M]')
+            return False
+
+    #get concentration of whats in cuvette
+    c1=A/(epsilon*pathlength) #M
+    #concentration of the 2uL (the actual sample)
+    #M1V1=M2V2
+    v1=v_tot #uL
+    v2=v_add #uL
+    m2=(c1*v1)/v2
+    m2_mM=m2*1000
+    print(m2_mM,' mM')
+    return m2_mM
