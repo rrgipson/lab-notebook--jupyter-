@@ -1,5 +1,5 @@
 # Digital Lab Notebook
-This repository serves as my lab notebook, providing a clean design to manage my experiments efficiently. It's optimized for Visual Studio Code (VS Code) Flexoki theme.
+This repository serves as my lab notebook, providing a clean design to manage my experiments efficiently. It combines the organizational framework of Notion with the ability to run executable code from Jupyter notebooks, optimized for VS Code's Flexoki theme.
 
 ## Structure
 The notebook is organized into three main directories:
