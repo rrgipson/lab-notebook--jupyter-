@@ -7,6 +7,13 @@ from nbformat.v4 import new_notebook
 def contains_space(s):
     return " " in s
 
+def create_project_map(project_names):
+    """Convert project names to a dictionary mapping original names to folder names."""
+    # Remove any empty strings and strip leading/trailing whitespace
+    project_names = [name.strip() for name in project_names if name]
+    project_map =  {name: name.replace(' ', '_').lower() for name in project_names}
+    return project_map
+
 # Ensure the DataFrame CSV file exists
 df_path = Path('experiments.csv')
 if not df_path.exists():
@@ -15,17 +22,12 @@ if not df_path.exists():
 else:
     df = pd.read_csv(df_path)
 
-def create_experiment(exp_id, exp_type, project, description):
+def create_experiment(exp_id, exp_type, project, description, project_options):
     # Use a relative path from the experimentHub.ipynb location
     base_directory = Path('experiments')
     global df
     # Define a mapping for project names to folder names
-    project_mapping = {
-        'metTy + catechol': 'metTy_catechol',
-        'oxyTy + catechol': 'oxyTy_catechol',
-        'CaOx': 'CaOx',
-        'Karlin': 'Karlin'
-    }
+    project_mapping = create_project_map(project_options)
     # Check if exp_id is already in the "Experiment ID" column
     if not df['Experiment ID'].str.contains(exp_id).any():
         if contains_space(exp_id):
