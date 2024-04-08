@@ -22,7 +22,7 @@ The notebook is organized into three main directories:
 - **Optimized Workflow**: Designed with simplicity in mind, it's tailored to reduce visual clutter while maintaining detailed records of experiments. Integration with a custom VS Code extension for copying experimental templates enhances efficiency.
 
 
-This project is a reflection of my ongoing efforts to optimize my experimental workflow. By leveraging automation and standardizing processes, it aims to thoroughly document each research step. This meticulous approach not only enhances scientific communication but also ensures that results and conclusions are reproducible. Efficiency, research integrity, and the pursuit of accuracy and reproducibility in experimental data collection and analysis are at the heart of this project. 
+This project is a reflection of my ongoing efforts to optimize my experimental workflow. By leveraging automation and standardizing processes, it aims to thoroughly document each research step. This  approach not only enhances scientific communication but also ensures that results and conclusions are reproducible. 
 
 As the Digital Lab Notebook evolves, future updates will include additional tools and templates to further support research needs, particularly in data analysis. This project is driven by the belief that a well-organized and systematically documented research process is key to advancing scientific knowledge.
 
