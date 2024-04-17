@@ -44,7 +44,7 @@ def create_experiment(exp_id, exp_type, project, description):
         (base_path / 'templates').mkdir(exist_ok=True)
         
         # Adjust the relative path for the backlink to experimentHub.ipynb
-        relative_path_to_hub = Path('..') / '..' / '..' / 'experimentHub.ipynb'
+        relative_path_to_hub = './../../../experimentHub.ipynb' #Path('..') / '..' / '..' / 'experimentHub.ipynb' #Fixed file link for Rob
 
         # Create a new Jupyter notebook
         nb_path = base_path / f"{exp_id}.ipynb"
@@ -52,7 +52,7 @@ def create_experiment(exp_id, exp_type, project, description):
         # Update the link to use the relative path
         nb.cells.append(nbformat.v4.new_markdown_cell(f"[Back to Experiment Hub]({relative_path_to_hub})\n# {description}\n**Hypothesis:**"))
         # Add other sections as before
-        nb.cells.append(nbformat.v4.new_code_cell("from IPython.display import Markdown as md \nimport numpy as np \nimport sys \nfrom pathlib import Path \nrelative_path_to_python_scripts = Path('../../../../pythonScripts') \nsys.path.append(str(relative_path_to_python_scripts.resolve())) \nfrom buffer_calc import * \nfrom conc_calc import *"))  # Import section
+        nb.cells.append(nbformat.v4.new_code_cell("from IPython.display import Markdown as md \nimport numpy as np \nimport sys \nfrom pathlib import Path \nrelative_path_to_python_scripts = Path('../../../../pythonScripts') \nsys.path.append(str(relative_path_to_python_scripts.resolve())) \nimport buffer_calc \nimport conc_calc"))  # Import section
         nb.cells.append(nbformat.v4.new_markdown_cell("## Materials\n\nMaterials | Cas # | Location | Molecular weight (g/mol)\n---------|----------|---------|---"))  # Materials section
         nb.cells.append(nbformat.v4.new_markdown_cell("## Method\nDescribe the method here."))  # Method section
         nb.cells.append(nbformat.v4.new_markdown_cell("## Analysis\nWrite your analysis plan here."))  # Analysis section
