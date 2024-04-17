@@ -72,3 +72,8 @@ def conc_from_uvvis(A, eps, v_add=2, v_tot=500, pathlength=1):
     m2_mM=m2*1000
     print(m2_mM,' mM')
     return m2_mM
+
+def dilute_to_vol(goal_vol, current_vol, current_conc, vol_units='uL', conc_units='mM'):
+    '''Use M1V1=M2V2 to dilute a solution to a goal volume.'''
+    new_conc = (current_conc*current_vol)/goal_vol
+    print(f'Add {goal_vol - current_vol} {vol_units} to make {new_conc} {conc_units} solution.')
