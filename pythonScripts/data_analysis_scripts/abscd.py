@@ -49,6 +49,7 @@ class AbsCD_Data:
         log = pd.read_csv(path+log_file)
         #use pandas to read in and aggregate data files
         #parse data from each data file
+        log['xy'] = pd.Series(dtype='object')
         for i,row in log.iterrows():
             if log.at[i,'File'] in data_files:
                 with open(path+log.at[i,'File'], 'r') as f:
@@ -67,15 +68,17 @@ class AbsCD_Data:
                             npts=int(line.split(',')[-1])
                 
                 #print(path+log.at[i,'File'])
-                data=pd.read_csv(path+log.at[i,'File'], skiprows=22, header=None,nrows=npts)
+                data=pd.read_csv(path+log.at[i,'File'], skiprows=22, header=None,
+                                 nrows=npts, names=np.concatenate((self.xlabels,self.ylabels)))
             
                 #write data to xs
-                log.at[i, self.xlabels[0]]=pd.Series(data[0]).values
+                log.at[i, 'xy']=data
+                #log.at[i, self.xlabels[0]]=pd.Series(data[self.xlabels[0]]).values
                 #write data to ys
-                yidx=1
-                for lab in self.ylabels:
-                    log.at[i, lab]=pd.Series(data[yidx]).values
-                    yidx+=1
+                #yidx=1
+                #for lab in self.ylabels:
+                #    log.at[i, lab]=pd.Series(data[lab]).values
+                #    yidx+=1
                 
         #Save data to class object
         self.data = log.copy()
@@ -106,7 +109,7 @@ class AbsCD_Data:
             fig.update_yaxes(title_text=yAx)
 
             for i in list(self.data.index):
-                fig.add_trace(go.Scatter(x=df.at[i,x],y=df.at[i,yAx],name=str(self.data.at[i,'Id']), mode='lines', line=go.scatter.Line(width=2)))
+                fig.add_trace(go.Scatter(x=df.at[i,'xy'][x],y=df.at[i,'xy'][yAx],name=str(self.data.at[i,'Id']), mode='lines', line=go.scatter.Line(width=2)))
             
             
             fig.add_hline(y=0)
@@ -116,11 +119,52 @@ class AbsCD_Data:
                 fig.update_layout(xaxis_range=x_range)
             fig.show()
 
+    def subtract(self, ref_id, ys):
+        ref_idx = self.data.index[self.data['Id'] == ref_id]
+        for i, row in self.data.iterrows():
+            self.data.at[i,'xy'][ys] = row['xy'][ys].sub(self.data.at[ref_idx, 'xy'][ys], axis='columns')
+        return True
+
+    '''def quick_plot_old(self, x=None, y=None, y_range=None, x_range=None):
+    #Makes interactive plotly plots from the data given specific x and y (str or list) parameters as the df column names
+        df = self.data
+        matplotlib.rcParams['figure.figsize'] = [10, 5]
+        #set up y data stucture
+        if y==None:
+            y=self.ylabels
+        if type(y) is str:
+            y=[y]
+        #set up x data structure
+        if x==None:
+            x = ('Wavenums' if 'Wavenums' in self.xlabels else 'NANOMETERS')
+
+        #print plot statement for all data
+        for yAx in y:
+            #Create plotly plot
+            fig = go.Figure(layout=go.Layout(
+                    width =1000, height=500,title=self.sample, margin=go.layout.Margin(b=50,t=50, l=20)))
+            
+            fig.update_xaxes(title_text=x)
+            fig.update_yaxes(title_text=yAx)
+
+            for i in list(self.data.index):
+                fig.add_trace(go.Scatter(x=df.at[i,x],y=df.at[i,yAx],name=str(self.data.at[i,'Id']), mode='lines', line=go.scatter.Line(width=2)))
+            
+            
+            fig.add_hline(y=0)
+            if y_range is not None:
+                fig.update_layout(yaxis_range=y_range)
+            if x_range is not None:
+                fig.update_layout(xaxis_range=x_range)
+            fig.show()'''
+
     def add_wavenums(self):
     #Add an x value of wavenumbers by converting nanometers
         if 'NANOMETERS' in self.xlabels and 'Wavenums' not in self.xlabels:
-            self.data['Wavenums'] = np.power(self.data['NANOMETERS'],-1)*10000000
+            #self.data['Wavenums'] = np.power(self.data['NANOMETERS'],-1)*10000000
             self.xlabels.append('Wavenums')
+            for i,row in self.data.iterrows():
+                self.data.at[i,'xy']['Wavenums'] = np.power(row['xy']['NANOMETERS'],-1)*10000000
         print(self.xlabels)
 
 
